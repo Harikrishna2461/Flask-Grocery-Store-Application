@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products Home</title>
+    <!-- Add the Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f59f00; /* Yellow-700 background color */
+        }
+
+        .container {
+            margin-top: 20px;
+            background-color: #00acc1; /* Yellow-700 background color for the container */
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #000000; /* Blue color for the heading */
+        }
+
+        .product-card {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            background-color: #4dd0e1;
+            transition: opacity 0.3s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card .card-title {
+            color: #333333;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-card .product-price {
+            color: #007bff;
+        }
+
+        .product-card .product-quantity {
+            color: #666666;
+        }
+
+        .product-card input[type="number"] {
+            width: 70px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #565e64;
+            border-color: #565e64;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+
+        .no-quantity {
+            opacity: 0.5;
+            pointer-events: none; /* Disable clicks on products with no quantity */
+        }
+
+        /* Add spacing between buttons */
+        .mt-4 {
+            margin-top: 20px;
+        }
+
+        /* Styling for the search bar */
+        #search_query {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        /* Styling for the filters */
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        /* Center the "Apply Filters" button */
+        #apply_filters {
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome Customer!</h1>
+
+        <!-- Search bar for product name -->
+        <form method="POST" action="{{ url_for('products_home') }}" class="mb-3">
+          <div class="form-row align-items-center">
+            <div class="col-md-4">
+              <label for="search_query">Search Product:</label>
+              <input type="text" id="search_query" name="search_query" class="form-control" placeholder="Enter product name">
+            </div>
+            <br> </br>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+          </div>
+        </form>
+      
+        <!-- Filter products based on category, price, and quantity_available -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="category_filter">Select Category:</label>
+                <select id="category_filter" class="form-control">
+                    <option value="all">All Categories</option>
+                    {% for category in categories %}
+                    <option value="{{ category.ID }}">{{ category.CATEGORY_NAME }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="price_filter">Price Filter:</label>
+                <select id="price_filter" class="form-control">
+                    <option value="all">All Prices</option>
+                    <option value="low_to_high">Low to High</option>
+                    <option value="high_to_low">High to Low</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="quantity_filter">Quantity Filter:</label>
+                <select id="quantity_filter" class="form-control">
+                    <option value="all">All Quantities</option>
+                    <option value="low_to_high">Low to High</option>
+                    <option value="high_to_low">High to Low</option>
+                </select>
+            </div>
+            <div class="col-md-12 mt-2">
+                <button id="apply_filters" class="btn btn-primary">Apply Filters</button>
+            </div>
+        </div>
+
+        <!-- Display products based on selected category and filters -->
+        <div id="products-container" class="row">
+            {% for product in products %}
+            <div class="col-md-4 product-card {% if product.Quantity_Available == 0 %}no-quantity{% endif %}" data-category="{{ product.Category_ID }}" data-price="{{ product.Price }}" data-quantity="{{ product.Quantity_Available }}">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ product.Name }}</h3>
+                        <p class="card-text product-price">Price: Rs {{ product.Price }} per {{ product.Unit }}</p>
+                        <p class="card-text product-quantity">Available Quantity: {{ product.Quantity_Available }}</p>
+                        <form method="POST" action="{{ url_for('products_home') }}">
+                            <input type="hidden" name="product_id" value="{{ product.ID }}">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="{{ product.Quantity_Available }}">
+                            <input type="submit" value="Add to Cart" class="btn btn-primary mt-2">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Buttons to go to cart and logout -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <a href="{{ url_for('cart') }}" class="btn btn-secondary">Go to Cart</a>
+            </div>
+            <!-- Add some spacing between buttons -->
+            <div style="margin-top: 5ex;"></div>
+            <div class="col-md-12">
+                <a href="{{ url_for('user_logout') }}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add the Bootstrap JS and jQuery scripts (required for Bootstrap and custom script) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Function to apply filters
+        function applyFilters() {
+            var selectedCategory = $("#category_filter").val();
+            var selectedPrice = $("#price_filter").val();
+            var selectedQuantity = $("#quantity_filter").val();
+            var searchQuery = $("#search_query").val();
+
+            // Hide all products initially
+            $(".product-card").hide();
+
+            // Show products based on the selected category filter
+            if (selectedCategory === "all") {
+                $(".product-card").show();
+            } else {
+                $(".product-card[data-category='" + selectedCategory + "']").show();
+            }
+
+            // Sort products based on the selected price filter
+            if (selectedPrice === "low_to_high") {
+                $(".product-card").sort(function(a, b) {
+                    var priceA = parseFloat($(a).data("price"));
+                    var priceB = parseFloat($(b).data("price"));
+                    return priceA - priceB;
+                }).appendTo("#products-container");
+            } else if (selectedPrice === "high_to_low") {
+                $(".product-card").sort(function(a, b) {
+                    var priceA = parseFloat($(a).data("price"));
+                    var priceB = parseFloat($(b).data("price"));
+                    return priceB - priceA;
+                }).appendTo("#products-container");
+            }
+
+            // Sort products based on the selected quantity filter
+            if (selectedQuantity === "low_to_high") {
+                $(".product-card").sort(function(a, b) {
+                    var quantityA = parseInt($(a).data("quantity"));
+                    var quantityB = parseInt($(b).data("quantity"));
+                    return quantityA - quantityB;
+                }).appendTo("#products-container");
+            } else if (selectedQuantity === "high_to_low") {
+                $(".product-card").sort(function(a, b) {
+                    var quantityA = parseInt($(a).data("quantity"));
+                    var quantityB = parseInt($(b).data("quantity"));
+                    return quantityB - quantityA;
+                }).appendTo("#products-container");
+            } 
+
+            // Show all products that match the search query
+            if (searchQuery) {
+                $(".product-card").filter(function () {
+                    var productName = $(this).find(".card-title").text();
+                    return productName.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
+                }).show();
+            }
+
+            // Add opacity to products with no quantity available
+            $(".product-card[data-quantity='0']").css("opacity", "0.5");
+        }
+
+        // Apply filters when the "Apply Filters" button is clicked
+        $("#apply_filters").click(function(event) {
+            event.preventDefault();
+            applyFilters();
+        });
+
+        // Show all products initially when the page loads
+        $(document).ready(function() {
+            $(".product-card").show();
+        });
+    </script>
+</body>
+</html>

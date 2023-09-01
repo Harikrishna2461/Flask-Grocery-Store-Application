@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Home</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        /* Add some spacing between the buttons */
+        form {
+            margin-bottom: 10px;
+        }
+
+        /* Style the product list items */
+        .product-item {
+            margin-bottom: 10px;
+        }
+
+        /* Custom styles for the container and background */
+        .container {
+            background-color: #B8B8B8; /* Greyish green background color */
+            border: 1px solid #007bff; /* Blue border */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 30px;
+            max-width: 800px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Welcome, Admin!</h1>
+
+        <!-- Summary Button -->
+        <a href="{{ url_for('summary') }}" class="btn btn-primary mb-3">View Summary</a>
+
+        <!-- Add Product Button -->
+        <form method="GET" action="{{ url_for('add_new_products') }}">
+            <button type="submit" class="btn btn-success btn-block">Add a Product</button>
+        </form>
+
+        <!-- Add Category Button -->
+        <form method="GET" action="{{ url_for('add_new_category') }}">
+            <button type="submit" class="btn btn-success btn-block">Add a Category</button>
+        </form>
+
+        <!-- Update Category Button -->
+        <form method="GET" action="{{ url_for('update_category') }}">
+            <button type="submit" class="btn btn-primary btn-block">Update a Category</button>
+        </form>
+
+        <!-- Delete Category Button -->
+        <form method="GET" action="{{ url_for('delete_category') }}">
+            <button type="submit" class="btn btn-danger btn-block">Delete a Category</button>
+        </form>
+
+        <!-- Dropdown menu to select categories -->
+        <label for="category-select">Select a category:</label>
+        <select id="category-select" class="form-control mb-3">
+            <option value="all">All Categories</option>
+            {% for category in categories %}
+            <option value="{{ category.ID }}">{{ category.CATEGORY_NAME }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Product list container with attractive border -->
+        <div id="product-list" class="border p-3 rounded">
+            {% for product in products %}
+            <div class="product-item" data-category-id="{{ product.Category_ID }}">
+                <form method="POST" action="{{ url_for('delete_existing_product', product_id=product.ID) }}">
+                    <!-- CSRF Token Field -->
+                    <p><strong>Product Name:</strong> {{ product.Name }}</p>
+                    <button type="submit" class="btn btn-sm btn-danger">Delete Product</button>
+                </form>
+                <form method="POST" action="{{ url_for('update_existing_product', product_id=product.ID) }}">
+                    <button type="submit" class="btn btn-sm btn-primary">Update Product</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+
+        <a href="{{ url_for('user_logout') }}" class="btn btn-secondary btn-block">Logout</a>
+    </div>
+
+    <!-- Add the Bootstrap JS and jQuery scripts (required for some Bootstrap features) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Get the product list container
+            var productList = $('#product-list');
+
+            // Hide all products initially
+            productList.find('.product-item').hide();
+
+            // Handle the change event of the category select dropdown
+            $('#category-select').change(function() {
+                var selectedCategory = $(this).val();
+
+                // Show all products if "All Categories" is selected
+                if (selectedCategory === 'all') {
+                    productList.find('.product-item').show();
+                } else {
+                    // Hide all products first
+                    productList.find('.product-item').hide();
+
+                    // Show products of the selected category
+                    productList.find('.product-item[data-category-id="' + selectedCategory + '"]').show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

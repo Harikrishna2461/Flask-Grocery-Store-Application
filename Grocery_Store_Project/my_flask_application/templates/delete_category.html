@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Category</title>
+    <!-- Add the Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9; /* Light gray background color */
+        }
+
+        .container {
+            margin-top: 30px;
+            max-width: 800px;
+            background-color: #ffebee; /* Light red background color */
+            border: 1px solid #f44336; /* Red border color */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Delete Category</h1>
+
+        <form method="POST" action="{{ url_for('delete_category') }}">
+            <div class="form-group">
+                <label for="category_id">Select Category to Delete:</label>
+                <select id="category_id" name="category_id" class="form-control" required>
+                    <option value="" disabled selected>Select Category</option>
+                    {% for category in categories %}
+                    <option value="{{ category.ID }}">{{ category.CATEGORY_NAME }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Delete Category</button>
+        </form>
+
+        <a href="{{ url_for('admin_home') }}" class="btn btn-secondary mt-2">Go back to Admin Home</a>
+    </div>
+
+    <!-- Add the Bootstrap JS and jQuery scripts (required for Bootstrap and custom script) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Product</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 30px;
+            max-width: 800px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Add New Product</h1>
+        <form method="POST" action="{{ url_for('add_new_products') }}">
+            <div class="form-group">
+                <label for="product_name">Name:</label>
+                <input type="text" id="product_name" name="name" class="form-control" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="product_price">Price:</label>
+                    <input type="number" id="product_price" name="price" step="0.01" class="form-control" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="product_quantity_available">Quantity Available:</label>
+                    <input type="number" id="product_quantity_available" name="quantity_available" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="product_category">Category:</label>
+                <select id="product_category" name="category_id" class="form-control" required>
+                    {% for category in categories %}
+                    <option value="{{ category.ID }}">{{ category.CATEGORY_NAME }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="product_unit">Unit:</label>
+                <input type="text" id="product_unit" name="unit" class="form-control" required>
+            </div>
+            <input type="submit" value="Add Product" class="btn btn-primary">
+        </form>
+        <p>Go back to <a href="{{ url_for('admin_home') }}">Home</a></p>
+    </div>
+
+    <!-- Add the Bootstrap JS and jQuery scripts (required for some Bootstrap features) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <!-- Add the Bootswatch CSS link -->
+    <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
+    
+    <!-- Include the shared custom CSS style from the signup page -->
+    <style>
+        body {
+            background-color: #b6e5b6;
+            padding-top: 40px;
+        }
+        .container {
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+        p {
+            text-align: center;
+        }
+        a {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Login</h1>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('user_login') }}" class="mt-4">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="usertype">User Type:</label>
+                <select class="form-control" id="usertype" name="usertype">
+                    <option value="customer">customer</option>
+                    <option value="admin">admin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary btn-block">
+            </div>
+        </form>
+
+        </div>
+        <div style="text-align: center;">
+          <p class="mt-3">Don't have an account? <a href="{{ url_for('user_signup') }}">Sign Up</a></p>
+        </div>
+    </div>
+
+    <!-- Add the Bootstrap JS and jQuery scripts (optional, but required for some Bootstrap features) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

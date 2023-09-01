@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summary Page</title>
+  <link rel="stylesheet" href="https://cdn.plot.ly/plotly-2.5.1.min.css">
+  <!-- Add Bootstrap CSS Link -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #d4edda; /* Light Green Background Color */
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Summary Page</a>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="text-center mb-4">Summary Page</h1>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title">Total Quantity Sold per Product</h2>
+        {{ graph1_html | safe }}
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title">Quantity Sold Over Time</h2>
+        {{ graph2_html | safe }}
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title">Products with Highest Quantity Sold</h2>
+        {{ graph3_html | safe }}
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title">Products Generating Maximum Revenue</h2>
+        {{ graph4_html | safe }}
+      </div>
+    </div>
+    <!-- Button to Go Back to Admin Home Page -->
+    <a href="{{ url_for('admin_home') }}" class="btn btn-primary">Go Back to Admin Home</a>
+  </div>
+  <!-- Add Bootstrap and Plotly Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
