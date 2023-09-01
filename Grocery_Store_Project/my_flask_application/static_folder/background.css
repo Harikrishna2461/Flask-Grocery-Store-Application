@@ -1,0 +1,4 @@
+body {
+  background-image: url('/static_folder/Background_Image.jpg');
+  background-size: cover; /* This will ensure the background image covers the entire body */
+}
